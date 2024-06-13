@@ -1,0 +1,22 @@
+.container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator
+{
+    border: 3px solid #000;
+    border-radius: 5px;
+
+}
+
+button {
+    border: 2px solid #000;
+}
+
+.display {
+    width: 50px;
+}
+
