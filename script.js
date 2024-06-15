@@ -1,6 +1,7 @@
 let firstNum = '';
 let operator = '';
 let secondNum = '';
+let solution = '';
 
 const display = document.querySelector(".display");
 const buttons = document.querySelectorAll("button");
@@ -25,61 +26,108 @@ function divide(a, b)
     return a / b;
 }
 
+function clearDisplay(display)
+{
+    display.textContent = '';
+    firstNum = '';
+    operator = '';
+    secondNum = '';
+
+}
+
 function operate(firstNum, operator, secondNum)
 {
-    let result;
+    let result = '';
 
     switch (operator)
     {
         case '+':
-            result = sum(firstNum, operator, secondNum);
+            result = add(firstNum, secondNum);
             break;
         case '-':
-            result = subtract(firstNum, operator, secondNum);
+            result = subtract(firstNum, secondNum);
             break;
         case '*':
-            result = multiply(firstNum, operator, secondNum);
+            result = multiply(firstNum, secondNum);
             break;
         case '/':
-            result = divide(firstNum, operator, secondNum);
+            result = divide(firstNum, secondNum);
             break;
         default:
             result = "Invalid operator.";
     }
 
-    console.log(result);
+    return result;
 }
 
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         const value = button.textContent;
-        display.textContent += " " + value;
         if (!isNaN(value) && value !== '.')
         {
             if (!operator)
             {
                 firstNum += value;
+                display.textContent = firstNum;
                 console.log(`first no: ${firstNum}`);
+                //console.log(typeof firstNum);
             }
-            else
+            else 
             {
                 secondNum += value;
                 console.log(`second no: ${secondNum}`);
+                display.textContent = secondNum;
             }
+        }
+        else if (value === '=')
+        {
+            const num1 = parseFloat(firstNum);
+            const num2 = parseFloat(secondNum);
+            console.log(num1, operator, num2);
+            let solution = operate(num1, operator, num2).toFixed(2);
+            console.log(parseFloat(solution));
+            clearDisplay(display);
+            display.textContent = solution;
         }
         else if (value === 'AC')
         {
-            display.textContent = '';
-            firstNum = '';
-            operator = '';
-            secondNum = '';
+            clearDisplay(display);
             
         }
         else if (value === '+' || value === '-' || value === '*' || value === '/')
         {
-            operator += value;
+            if (!operator)
+            {
+                operator += value;
+            }
+            else if (firstNum && operator && secondNum)
+            {   
+                const num1 = parseFloat(firstNum);
+                const num2 = parseFloat(secondNum);
+                console.log(num1, operator, num2);
+                solution = operate(num1, operator, num2).toFixed(2);
+                console.log(parseFloat(solution));
+                clearDisplay(display);
+                display.textContent = solution;
+                operator += value;
+                firstNum = solution;
+            }
+            
             console.log(`operator: ${operator}`);
         }
+        else if (value === '.')
+        {
+            display.textContent += value;
+            if (!secondNum)
+            {
+                firstNum += value;
+            }
+            else
+            {
+                secondNum += value;
+            }
+        }
+        
     });
   });
 
