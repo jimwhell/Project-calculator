@@ -54,10 +54,10 @@ function operate(firstNum, operator, secondNum)
             result = multiply(firstNum, secondNum);
             break;
         case '/':
-            result = secondNum === 0 ? "ERROR" : divide(firstNum, secondNum);
+            result = secondNum === 0 ? "Error" : divide(firstNum, secondNum);
             break;
         default:
-            result = "ERROR";
+            result = "Error";
     }
 
     return result;
@@ -68,9 +68,24 @@ buttons.forEach((button) => {
         const value = button.textContent;
         if (value === 'Del')
         {
+            if (display.textContent === firstNum)
+            {
+                firstNum = firstNum.slice(0, -1);
+                console.log(`First number: ${firstNum}`);
+            }
+            else if (display.textContent === secondNum)
+            {
+                secondNum = secondNum.slice(0, -1);
+                console.log(`Second number: ${secondNum}`);
+            }
+            else if (display.textContent === 'Error')
+            {
+                clearDisplay(display);
+            }
+
             display.textContent = display.textContent.length === 1 ? '0' : display.textContent.slice(0, -1);
-            firstNum = firstNum.slice(0, -1);
-            console.log(firstNum);
+            console.log(display.textContent);
+                        
         }
         else if (!isNaN(value) && value !== '.')
         {
@@ -92,12 +107,21 @@ buttons.forEach((button) => {
         {
             const num1 = parseFloat(firstNum);
             const num2 = parseFloat(secondNum);
-            console.log(num1, operator, num2);
-            solution = operate(num1, operator, num2);
-            if (typeof solution === 'number')
+            console.log(typeof num1);
+            console.log(typeof num2);
+            if (isNaN(num1) || isNaN(num2))
             {
-                solution = operate(num1, operator, num2).toFixed(0);
+                solution = 'Error';
+                
             }
+            else
+            {
+                
+                console.log(num1, operator, num2);
+                solution = operate(num1, operator, num2);
+            }
+            
+            /*solution = typeof solution === 'number' ? solution = operate(num1, operator, num2).toFixed(0) : 'ERROR';*/
             clearDisplay(display);
             display.textContent = solution;
         }
