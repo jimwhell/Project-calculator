@@ -1,10 +1,13 @@
+const display = document.querySelector(".display");
+const buttons = document.querySelectorAll("button");
+
+display.textContent = '0';
 let firstNum = '';
 let operator = '';
 let secondNum = '';
 let solution = '';
 
-const display = document.querySelector(".display");
-const buttons = document.querySelectorAll("button");
+
 
 function add(a, b)
 {
@@ -28,7 +31,7 @@ function divide(a, b)
 
 function clearDisplay(display)
 {
-    display.textContent = '';
+    display.textContent = '0';
     firstNum = '';
     operator = '';
     secondNum = '';
@@ -51,10 +54,10 @@ function operate(firstNum, operator, secondNum)
             result = multiply(firstNum, secondNum);
             break;
         case '/':
-            result = divide(firstNum, secondNum);
+            result = secondNum === 0 ? "ERROR" : divide(firstNum, secondNum);
             break;
         default:
-            result = "Invalid operator.";
+            result = "ERROR";
     }
 
     return result;
@@ -63,7 +66,13 @@ function operate(firstNum, operator, secondNum)
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         const value = button.textContent;
-        if (!isNaN(value) && value !== '.')
+        if (value === 'Del')
+        {
+            display.textContent = display.textContent.length === 1 ? '0' : display.textContent.slice(0, -1);
+            firstNum = firstNum.slice(0, -1);
+            console.log(firstNum);
+        }
+        else if (!isNaN(value) && value !== '.')
         {
             if (!operator)
             {
@@ -84,8 +93,11 @@ buttons.forEach((button) => {
             const num1 = parseFloat(firstNum);
             const num2 = parseFloat(secondNum);
             console.log(num1, operator, num2);
-            let solution = operate(num1, operator, num2).toFixed(2);
-            console.log(parseFloat(solution));
+            solution = operate(num1, operator, num2);
+            if (typeof solution === 'number')
+            {
+                solution = operate(num1, operator, num2).toFixed(0);
+            }
             clearDisplay(display);
             display.textContent = solution;
         }
@@ -105,7 +117,7 @@ buttons.forEach((button) => {
                 const num1 = parseFloat(firstNum);
                 const num2 = parseFloat(secondNum);
                 console.log(num1, operator, num2);
-                solution = operate(num1, operator, num2).toFixed(2);
+                solution = operate(num1, operator, num2).toFixed(0);
                 console.log(parseFloat(solution));
                 clearDisplay(display);
                 display.textContent = solution;
@@ -117,14 +129,22 @@ buttons.forEach((button) => {
         }
         else if (value === '.')
         {
-            display.textContent += value;
+            
             if (!secondNum)
             {
-                firstNum += value;
+                if (!firstNum.includes('.'))
+                {
+                    firstNum += value;
+                    display.textContent += value;    
+                }
             }
             else
             {
-                secondNum += value;
+                if (!secondNum.includes('.'))
+                {
+                    secondNum += value;
+                    display.textContent += value;    
+                }
             }
         }
         
