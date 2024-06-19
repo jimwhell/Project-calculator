@@ -6,11 +6,15 @@ html, body {
 .container
 {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 80vw;
+    height: 100%;
+    width: 100%;
     padding: 20px;
+    background-image: url(images/background-img.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .calculator
